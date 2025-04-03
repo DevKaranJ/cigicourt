@@ -1,0 +1,72 @@
+[
+    {
+        "id": "CRM-2025-0301",
+        "title": "State vs. Harrison Financial Corp.",
+        "status": "Urgent",
+        "date": "2025-03-01",
+        "summary": "Corporate fraud and market manipulation case involving multiple jurisdictions",
+        "priority": "high",
+        "details": "Major financial institution accused of systematic market manipulation and fraudulent reporting.",
+        "recommendations": [
+            "Review SEC regulations 10b-5",
+            "Consider whistleblower testimony",
+            "Examine cross-border implications"
+        ]
+    },
+    {
+        "id": "CRM-2025-0302",
+        "title": "People vs. John Doe",
+        "status": "Pending",
+        "date": "2025-03-02",
+        "summary": "Theft and burglary case with multiple offenses",
+        "priority": "medium",
+        "details": "The suspect has been accused of multiple break-ins and theft of high-value assets.",
+        "recommendations": [
+            "Analyze forensic evidence",
+            "Cross-check alibi with security footage",
+            "Consider psychological evaluation"
+        ]
+    },
+    {
+        "id": "CRM-2025-0303",
+        "title": "State vs. XYZ Corp.",
+        "status": "Completed",
+        "date": "2025-02-20",
+        "summary": "Tax evasion and corporate fraud investigation",
+        "priority": "high",
+        "details": "XYZ Corp. allegedly engaged in large-scale tax evasion and fraudulent accounting practices.",
+        "recommendations": [
+            "Review financial statements",
+            "Investigate offshore accounts",
+            "Analyze tax law compliance"
+        ]
+    },
+    {
+        "id": "CRM-2025-0304",
+        "title": "People vs. Jane Smith",
+        "status": "Urgent",
+        "date": "2025-03-05",
+        "summary": "Cybercrime case involving identity theft",
+        "priority": "high",
+        "details": "The suspect is accused of stealing personal information and conducting financial fraud online.",
+        "recommendations": [
+            "Investigate digital footprints",
+            "Check social engineering patterns",
+            "Analyze IP logs"
+        ]
+    },
+    {
+        "id": "CRM-2025-0305",
+        "title": "State vs. ABC Logistics",
+        "status": "Pending",
+        "date": "2025-03-06",
+        "summary": "Workplace safety violations and employee endangerment",
+        "priority": "low",
+        "details": "Multiple reports of unsafe working conditions leading to injuries.",
+        "recommendations": [
+            "Audit safety procedures",
+            "Interview affected employees",
+            "Review compliance with labor laws"
+        ]
+    }
+]

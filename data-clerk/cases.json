@@ -1,0 +1,49 @@
+[
+    {
+        "id": "CIV-2025-0301",
+        "title": "Divorce Proceedings",
+        "status": "Pending Filing",
+        "date": "2025-03-01",
+        "partyA": "Elizabeth Montgomery",
+        "partyB": "Richard Montgomery",
+        "caseType": "Family Law",
+        "filingFee": 350.0,
+        "assignedJudge": "Hon. Sarah Chen",
+        "documents": [
+            {
+                "name": "Divorce Petition",
+                "status": "Pending",
+                "uploadDate": "2025-03-01"
+            },
+            {
+                "name": "Financial Disclosure",
+                "status": "Pending",
+                "uploadDate": "2025-03-01"
+            }
+        ]
+    },
+    {
+        "id": "PRO-2025-0300",
+        "title": "Estate Administration",
+        "status": "Filed",
+        "date": "2025-02-28",
+        "partyA": "James Richardson Estate",
+        "partyB": "Beneficiaries",
+        "caseType": "Probate",
+        "filingFee": 450.0,
+        "assignedJudge": "Hon. William Mitchell",
+        "nextHearing": "2025-03-15",
+        "documents": [
+            {
+                "name": "Will Document",
+                "status": "Verified",
+                "uploadDate": "2025-02-28"
+            },
+            {
+                "name": "Asset Inventory",
+                "status": "Pending",
+                "uploadDate": "2025-02-28"
+            }
+        ]
+    }
+]
