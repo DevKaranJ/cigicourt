@@ -2,7 +2,13 @@ import { faCloudUploadAlt, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
 
-const NewFilingModal = ({ setShowNewFilingModal, setCases, cases }) => {
+const NewFilingModal = ({ 
+  setShowNewFilingModal, 
+  setCases, 
+  cases,
+  setSuccessMessage,
+  setShowSuccessModal 
+}) => {
   const [newFilingForm, setNewFilingForm] = useState({
     caseTitle: "",
     caseType: "Criminal",
