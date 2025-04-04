@@ -33,6 +33,8 @@ const NewFilingModal = ({
     witnessStatements: null,
     additionalDocuments: null,
   });
+  const [summaries, setSummaries] = useState({});
+  const [isSummarizing, setIsSummarizing] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -70,24 +72,52 @@ const NewFilingModal = ({
   const handleFileUpload = async (event, type) => {
     const file = event.target.files[0];
     if (file && file.type === "application/pdf") {
+      setIsSummarizing(true);
       const formData = new FormData();
       formData.append("file", file);
   
       try {
-        const response = await fetch("http://localhost:5000/upload", {
+        // First upload to your existing endpoint
+        const uploadResponse = await fetch("http://localhost:5000/upload", {
           method: "POST",
           body: formData,
         });
   
-        if (response.ok) {
-          const data = await response.json();
-          setUploadedFiles((prev) => ({ ...prev, [type]: data.filePath }));
+        if (uploadResponse.ok) {
+          const uploadData = await uploadResponse.json();
+          
+          // Then get summary from new endpoint
+          const summaryResponse = await fetch("/api/pdf/summarize", {
+            method: "POST",
+            body: formData,
+          });
+          
+          if (summaryResponse.ok) {
+            const { summary } = await summaryResponse.json();
+            
+            setUploadedFiles(prev => ({ 
+              ...prev, 
+              [type]: {
+                filePath: uploadData.filePath,
+                summary: summary
+              }
+            }));
+            
+            setSummaries(prev => ({
+              ...prev,
+              [file.name]: summary
+            }));
+            
+            console.log(`Summary for ${file.name}:`, summary);
+          }
         } else {
           alert("File upload failed. Try again.");
         }
       } catch (error) {
-        console.error("Error uploading file:", error);
-        alert("Error uploading file.");
+        console.error("Error processing file:", error);
+        alert("Error processing file.");
+      } finally {
+        setIsSummarizing(false);
       }
     } else {
       alert("Only PDF files are allowed.");
@@ -361,11 +391,22 @@ const NewFilingModal = ({
                       icon={faCloudUploadAlt}
                       className="text-2xl text-gray-400 mb-1"
                     />
-                    <p className="text-xs text-gray-500">
-                      {uploadedFiles.chargeSheet
-                        ? uploadedFiles.chargeSheet.name
-                        : "Upload Charge Sheet (PDF only)"}
-                    </p>
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        {uploadedFiles.chargeSheet
+                          ? uploadedFiles.chargeSheet.filePath.split('/').pop()
+                          : "Upload Charge Sheet (PDF only)"}
+                      </p>
+                      {uploadedFiles.chargeSheet?.summary && (
+                        <div className="mt-2 p-2 bg-gray-50 rounded text-xs">
+                          <p className="font-medium">Summary:</p>
+                          <p>{uploadedFiles.chargeSheet.summary}</p>
+                        </div>
+                      )}
+                      {isSummarizing && (
+                        <p className="text-xs text-blue-500 mt-1">Generating summary...</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -387,11 +428,22 @@ const NewFilingModal = ({
                       icon={faCloudUploadAlt}
                       className="text-2xl text-gray-400 mb-1"
                     />
-                    <p className="text-xs text-gray-500">
-                      {uploadedFiles.supportingEvidence
-                        ? uploadedFiles.supportingEvidence.name
-                        : "Upload evidence documents (PDF only)"}
-                    </p>
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        {uploadedFiles.supportingEvidence
+                          ? uploadedFiles.supportingEvidence.filePath.split('/').pop()
+                          : "Upload evidence documents (PDF only)"}
+                      </p>
+                      {uploadedFiles.supportingEvidence?.summary && (
+                        <div className="mt-2 p-2 bg-gray-50 rounded text-xs">
+                          <p className="font-medium">Summary:</p>
+                          <p>{uploadedFiles.supportingEvidence.summary}</p>
+                        </div>
+                      )}
+                      {isSummarizing && (
+                        <p className="text-xs text-blue-500 mt-1">Generating summary...</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -411,11 +463,22 @@ const NewFilingModal = ({
                       icon={faCloudUploadAlt}
                       className="text-2xl text-gray-400 mb-1"
                     />
-                    <p className="text-xs text-gray-500">
-                      {uploadedFiles.witnessStatements
-                        ? uploadedFiles.witnessStatements.name
-                        : "Upload witness statements (PDF only)"}
-                    </p>
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        {uploadedFiles.witnessStatements
+                          ? uploadedFiles.witnessStatements.filePath.split('/').pop()
+                          : "Upload witness statements (PDF only)"}
+                      </p>
+                      {uploadedFiles.witnessStatements?.summary && (
+                        <div className="mt-2 p-2 bg-gray-50 rounded text-xs">
+                          <p className="font-medium">Summary:</p>
+                          <p>{uploadedFiles.witnessStatements.summary}</p>
+                        </div>
+                      )}
+                      {isSummarizing && (
+                        <p className="text-xs text-blue-500 mt-1">Generating summary...</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -437,11 +500,22 @@ const NewFilingModal = ({
                       icon={faCloudUploadAlt}
                       className="text-2xl text-gray-400 mb-1"
                     />
-                    <p className="text-xs text-gray-500">
-                      {uploadedFiles.additionalDocuments
-                        ? uploadedFiles.additionalDocuments.name
-                        : "Upload any additional supporting documents (PDF only)"}
-                    </p>
+                    <div>
+                      <p className="text-xs text-gray-500">
+                        {uploadedFiles.additionalDocuments
+                          ? uploadedFiles.additionalDocuments.filePath.split('/').pop()
+                          : "Upload any additional supporting documents (PDF only)"}
+                      </p>
+                      {uploadedFiles.additionalDocuments?.summary && (
+                        <div className="mt-2 p-2 bg-gray-50 rounded text-xs">
+                          <p className="font-medium">Summary:</p>
+                          <p>{uploadedFiles.additionalDocuments.summary}</p>
+                        </div>
+                      )}
+                      {isSummarizing && (
+                        <p className="text-xs text-blue-500 mt-1">Generating summary...</p>
+                      )}
+                    </div>
                   </div>
                 </div>
               </div>
