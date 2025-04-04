@@ -1,21 +1,45 @@
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf';
-import { CharacterTextSplitter } from 'langchain/text_splitter';
+import { OpenAI } from 'openai';
+import dotenv from 'dotenv';
+
+// Load environment variables
+dotenv.config();
+
+// Initialize OpenAI
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY
+});
 
 // In-memory storage for summaries
 const summaries = new Map();
 
 export async function summarizePDF(fileBuffer, fileName) {
     try {
-        // Load PDF and extract text
+        // 1. Extract text from PDF
         const loader = new PDFLoader(new Blob([fileBuffer]));
         const docs = await loader.load();
-        
-        // Combine all pages into single text
         const fullText = docs.map(doc => doc.pageContent).join('\n\n');
-        
-        // Extract first 3 paragraphs as simple summary
-        const paragraphs = fullText.split('\n\n').filter(p => p.trim().length > 0);
-        const summary = paragraphs.slice(0, 3).join('\n\n');
+
+        // 2. Clean and prepare text for summarization
+        const cleanText = fullText
+            .replace(/\n/g, ' ') // Remove line breaks
+            .replace(/\s+/g, ' ') // Collapse multiple spaces
+            .substring(0, 10000); // Limit to first 10k chars
+
+        // 3. Get summary from OpenAI
+        const response = await openai.chat.completions.create({
+            model: "gpt-3.5-turbo",
+            messages: [{
+                role: "system",
+                content: "You are a helpful assistant that summarizes documents concisely."
+            }, {
+                role: "user",
+                content: `Summarize this document in 3-5 sentences:\n\n${cleanText}`
+            }],
+            temperature: 0.3
+        });
+
+        const summary = response.choices[0].message.content;
         
         // Store summary
         summaries.set(fileName, summary);
